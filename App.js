@@ -135,10 +135,10 @@ function Feature() {
         return {
             // Features in states where work has been done
             '_TypeHierarchy': typeHierarchy,
-            'or': [
-                'State': { '$gte': 'Prep' }
-                'State': { '$lt': 'Toggled On for all' }
-            ]
+			'State': {
+				'$gte': 'Prep',
+				'$lt': 'Toggled On for all'
+			}
         };
     };
     this.completePredicate = function() {
@@ -146,7 +146,7 @@ function Feature() {
             // Features that are available to all GA users or archived
             '_TypeHierarchy': typeHierarchy,
             'State': { '$gte': 'Toggled On for all' }
-            ]
+            
         };
     };
 }
@@ -366,14 +366,16 @@ Ext.define('CustomApp', {
         var config = {
             granularity: 'hour',
             tz: this._workspaceConfig.TimeZone,
-            workDays: this._workspaceConfig.WorkDays.split(','),
-            endBefore: this.getEndBefore(),
+            //workDays: this._workspaceConfig.WorkDays.split(','),
+            // Showing calendar days
+			workDays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday','Saturday'],
+			endBefore: this.getEndBefore(),
 
             // assume 9-5
             workDayStartOn: {hour: 9, minute: 0},
             workDayEndBefore: {hour: 17, minute: 0},
 
-            holidays: this._federalHolidays(),
+            //holidays: this._federalHolidays(),
 
             trackLastValueForTheseFields: [this._xAxisStrategy.field]
         };
