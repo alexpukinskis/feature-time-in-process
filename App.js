@@ -133,22 +133,19 @@ function Feature() {
     var typeHierarchy = 'PortfolioItem/Feature';
     this.progressPredicate = function() {
         return {
-            // Features in development and < 100 % done
+            // Features in states where work has been done
             '_TypeHierarchy': typeHierarchy,
-            'State': 'In Dev',
-            'PercentDoneByStoryCount': {
-                '$lt': 1,
-                '$gt': 0
-            }
+            'or': [
+                'State': { '$gte': 'Prep' }
+                'State': { '$lt': 'Toggled On for all' }
+            ]
         };
     };
     this.completePredicate = function() {
         return {
-            // Features not in development anymore or >= 100% done
+            // Features that are available to all GA users or archived
             '_TypeHierarchy': typeHierarchy,
-            '$or': [
-                { 'State': { '$gt': 'In Dev' } },
-                { 'PercentDoneByStoryCount': { '$gte': 1 } }
+            'State': { '$gte': 'Toggled On for all' }
             ]
         };
     };
